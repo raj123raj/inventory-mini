@@ -1,0 +1,39 @@
+name: Auto PR for Laravel Changes
+on:
+  push:
+    branches: [ main ]  # Trigger on main pushes
+    paths: [ 'app/**', 'routes/**' ]  # Laravel changes only
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup PHP 8.3
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.3'
+        coverage: pcov
+        
+    - name: Cache Composer
+      uses: actions/cache@v4
+      with: { path: vendor, key: composer-${{ hashFiles('composer.lock') }} }
+      
+    - run: composer install --no-progress
+    
+    - run: php artisan test  # Your Laravel tests
+    
+    - name: Create Auto PR
+      if: github.ref == 'refs/heads/main'
+      uses: peter-evans/create-pull-request@v7
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        commit-message: "Auto: Update Laravel ${{ github.sha }}"
+        title: "🤖 Auto PR: Laravel changes"
+        body: |
+          Changes detected in app/routes.
+          - Tests: ✅ Passed
+          Closes #123
+        branch: auto-laravel-update
+        delete-branch: true
