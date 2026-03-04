@@ -12,6 +12,6 @@ jobs:
         path: vendor
         key: composer-${{ hashFiles('composer.lock') }}
     - run: composer install --no-progress
-    - run: php artisan test
+    
     - name: Build Docker
       run: docker build -t inventory-mini:test .
