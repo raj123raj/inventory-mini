@@ -52,7 +52,7 @@ pipeline {
   
 		stage('Start Dev Server') {
 			steps {
-				bat '"%PHP_PATH%" artisan serve --host=127.0.0.1 --port=8000 ^&'
+				bat 'start "" "%PHP_PATH%" artisan serve --host=127.0.0.1 --port=8000'
 			}
 		}
 
