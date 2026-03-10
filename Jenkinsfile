@@ -10,42 +10,7 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                git branch: 'main',
-                    credentialsId: 'github-raj123raj',
-                    url: 'https://github.com/raj123raj/inventory-mini'
-            }
-        }
-
-        stage('Dependencies') {
-            steps {
-                // Verify composer.json exists in workspace
-                bat 'dir composer.json'         
-                
-                // Install PHP dependencies -> creates vendor/autoload.php
-                bat "%COMPOSER_PATH% install --no-progress --no-interaction"
-				
-            }
-        }
-
-      stage('Environment') {
-		steps {
-			bat """
-			copy /Y .env.example .env
-			"%PHP_PATH%" artisan key:generate --force
-			"""
-		}
-	  }
-	  stage('Frontend Build') {
-            steps {
-                bat '''
-                npm install
-                npm run build
-                '''
-            }
-        }
-		
+        
       stage('Test DB') {
             steps {
                 bat """
