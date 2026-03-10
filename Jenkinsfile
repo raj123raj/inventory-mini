@@ -18,8 +18,8 @@ pipeline {
                 "%PHP_PATH%" artisan migrate:fresh --seed
                 """
 				bat """
-				"%MYSQL_PATH%" -h localhost -u root -p%MYSQL_PASSWORD% -e "DROP DATABASE IF EXISTS my_test_db;"
-				"%MYSQL_PATH%" -h localhost -u root -p%MYSQL_PASSWORD% -e "CREATE DATABASE my_test_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+				"%MYSQL_PATH%" -h localhost -u root -p%MYSQL_PASSWORD% -e "DROP DATABASE IF EXISTS laravel1;"
+				"%MYSQL_PATH%" -h localhost -u root -p%MYSQL_PASSWORD% -e "CREATE DATABASE laravel1 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 				"%PHP_PATH%" artisan migrate:fresh --seed
 				"""
 
