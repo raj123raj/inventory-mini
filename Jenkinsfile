@@ -45,20 +45,21 @@ pipeline {
                 '''
             }
         }
+		
+      stage('Test DB') {
+            steps {
+                bat """
+                if exist database\\database.sqlite del database\\database.sqlite
+                "%PHP_PATH%" artisan migrate:fresh --seed
+                """
+				bat """
+				"%MYSQL_PATH%" -h localhost -u root -p%MYSQL_PASSWORD% -e "DROP DATABASE IF EXISTS my_test_db;"
+				"%MYSQL_PATH%" -h localhost -u root -p%MYSQL_PASSWORD% -e "CREATE DATABASE my_test_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+				"%PHP_PATH%" artisan migrate:fresh --seed
+				"""
 
-
-
-
-  
-		stage('Start Dev Server') {
-			steps {
-				bat 'start "" "%PHP_PATH%" artisan serve --host=127.0.0.1 --port=8000'
-			}
-		}
-
-
-
-
+            }
+        }	
     }
 
 
